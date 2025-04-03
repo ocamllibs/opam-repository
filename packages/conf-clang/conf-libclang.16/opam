@@ -1,0 +1,47 @@
+opam-version: "2.0"
+maintainer: "Thierry Martinez <martinez@nsup.org>"
+authors: "The LLVM team"
+homepage: "http://llvm.org"
+bug-reports: "https://llvm.org/bugs/"
+license: "MIT"
+build: [
+  ["bash" "-ex" "configure.sh" version]
+]
+depexts: [
+  ["llvm"] {os = "macos"}
+  ["llvm" "clang"] {os-distribution = "arch"}
+  ["libclang-15-dev" "libclang-cpp15-dev" "llvm-15-dev"]
+    {(os-distribution = "ubuntu" & os-version >= "22.10")}
+  ["libclang-14-dev" "libclang-cpp14-dev" "llvm-14-dev"]
+    {(os-distribution = "debian" & os-version >= "12") |
+     (os-distribution = "ubuntu" & os-version = "22.04")}
+  ["libclang-dev" "libclang-cpp-dev" "llvm-dev"] {
+     os-distribution = "debian" & os-version >= "11"}
+  ["libclang-dev" "llvm-dev"] {
+     os-family = "debian" &
+     !(os-distribution = "debian" & os-version >= "11") &
+     !(os-distribution = "ubuntu" & os-version >= "22.04")}
+  ["clang-dev" "llvm-dev" "clang-static"] {os-distribution = "alpine"}
+  ["clang-devel" "llvm-devel" "llvm-static" "zlib-devel"]
+    {os-distribution = "centos"}
+  ["clang-devel" "llvm-devel" "zlib-devel" "redhat-rpm-config"]
+    {os-distribution = "fedora"}
+  ["clang-devel" "llvm-devel" "llvm-static" "zlib-devel"]
+    {os-distribution = "ol" & os-version >= "8"}
+  ["llvm-clang-devel"] {os-family = "suse"}
+  ["devel/llvm15"] {os = "freebsd"}
+  ["sys-devel/clang"] {os-distribution = "gentoo"}
+]
+x-ci-accept-failures: [
+  "oraclelinux-7" # clang-devel is not available
+  "alpine-3.13" # unavailable system package 'llvm-dev'
+  "alpine-3.14" # unavailable system package 'llvm-dev'
+  "alpine-3.15" # unavailable system package 'llvm-dev'
+  "alpine-3.16" # unavailable system package 'llvm-dev'
+  "opensuse-15.3" # unavailable system package 'llvm-clang-devel'
+]
+extra-files: [[
+  "configure.sh" "sha512=7d39a7bb14338ae526f0f285b68858e7d27ea40ae4c60875a38750e739504e2875631a6f0c38663c5bac0187919c8172d97c71a031d1511ff9802a83fe17cbfd"
+]]
+synopsis: "Virtual package relying on the installation of llvm and clang libraries (<= 16.0.x)"
+flags: conf
